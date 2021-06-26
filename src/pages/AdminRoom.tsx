@@ -9,6 +9,8 @@ import { useAuth } from '../hooks/useAuth';
 import { useRoom } from '../hooks/useRoom';
 import { database } from '../services/firebase';
 import deleteImg from '../assets/images/delete.svg'
+import checkImg from '../assets/images/check.svg'
+import answerImg from '../assets/images/answer.svg'
 
 import '../styles/rooms.scss';
 
@@ -39,9 +41,22 @@ export function AdminRoom(){
     if(window.confirm('Tem certeza que deseja excluir essa pergunta?')){
       await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
     }
-
-    
   }
+
+
+  async function handleCheckQuestionAsAnswer(questionId : string){
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isAnswered: true,
+    })
+  }
+
+
+  async function handleHighlightQuestion(questionId : string){
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isHighLighted: true,
+    })
+  }
+
 
   return (
     <div id="page-room">
@@ -69,12 +84,30 @@ export function AdminRoom(){
               key={question.id}
               content= {question.content}
               author = {question.author}
+              isAnswered = {question.isAnswered}
+              isHighLighted = {question.isHighLighted}
             >
+              {!question.isAnswered && (
+                  <>
+                  <button
+                  type="button"
+                  onClick={() => handleCheckQuestionAsAnswer(question.id)}
+                >
+                  <img src={checkImg} alt="marcar"/>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleHighlightQuestion(question.id)}
+                >
+                  <img src={answerImg} alt="destaque"/>
+                </button>
+                </>
+              )}
               <button
                 type="button"
                 onClick={() => handleDeleteQuestion(question.id)}
               >
-                <img src={deleteImg} alt="delete"/>
+                <img src={deleteImg} alt="deleta"/>
               </button>
             </Question>
           )

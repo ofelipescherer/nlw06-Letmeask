@@ -6,7 +6,7 @@ import { useHistory } from 'react-router'
 
 
 
-import { auth, database, firebase } from '../services/firebase'
+import { database } from '../services/firebase'
 import '../styles/auth.scss'
 import { useAuth } from '../hooks/useAuth'
 import { FormEvent } from 'react'
