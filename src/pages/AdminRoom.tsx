@@ -19,7 +19,7 @@ type RoomParams = {
 
 
 
-export function Room(){
+export function AdminRoom(){
 
   const { user } = useAuth();
   const param = useParams<RoomParams>();
@@ -59,7 +59,11 @@ export function Room(){
       <header>
         <div className="content">
           <img src={logoImg} alt="Logo" />
-          <RoomCode code={roomId}/>
+          <div>
+            <RoomCode code={roomId}/>
+            <Button isOutlined>Encerrar sala</Button>
+          </div>
+
         </div>
       </header>
 
@@ -69,25 +73,6 @@ export function Room(){
           { questions.length > 0 && <span>{questions.length} pergunta(s)</span> /*Para fazer o if ternário sem o else, use &&*/ } 
         </div>
 
-        <form onSubmit={handleSendQuestion}>
-          <textarea
-            placeholder="O que você deseja perguntar?"
-            onChange={event => setNewQuestion(event.target.value)}
-            value={newQuestion}
-          />
-          
-          <div className="form-footer">
-            { user ? (
-              <div className="user-info"> 
-                <img src={user.avatar} alt={user.name} />
-                <span>{user.name}</span>
-              </div>
-            ) : (
-              <span>Para enviar uma pergunta, <button>faça seu login</button>.</span>
-            ) }
-            <Button type="submit" disabled={!user}>Enviar pergunta</Button>
-          </div>
-        </form>
         <div className="question-list">
         {questions.map(question => {
           return (
